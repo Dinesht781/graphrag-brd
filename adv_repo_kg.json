@@ -1,0 +1,487 @@
+{
+    "repository": "C:\\projects\\Ask-docs",
+    "directories": [
+        "C:\\projects\\Ask-docs",
+        "C:\\projects\\Ask-docs\\api",
+        "C:\\projects\\Ask-docs\\api\\chroma_db",
+        "C:\\projects\\Ask-docs\\api\\chroma_db\\052a2183-f2c6-450e-8e07-8c7c8e996578",
+        "C:\\projects\\Ask-docs\\app"
+    ],
+    "files": [
+        {
+            "file": "C:\\projects\\Ask-docs\\main.py",
+            "imports": [],
+            "classes": [],
+            "functions": [
+                {
+                    "name": "main",
+                    "start_line": 1,
+                    "end_line": 2,
+                    "calls": [
+                        "print"
+                    ]
+                }
+            ]
+        },
+        {
+            "file": "C:\\projects\\Ask-docs\\api\\chroma_utils.py",
+            "imports": [
+                "from langchain_community.document_loaders import PyPDFLoader, Docx2txtLoader, UnstructuredHTMLLoader",
+                "from langchain_text_splitters import RecursiveCharacterTextSplitter",
+                "from langchain_openai import OpenAIEmbeddings",
+                "from langchain_chroma import Chroma",
+                "from typing import List",
+                "from langchain_core.documents import Document",
+                "import os",
+                "from dotenv import load_dotenv"
+            ],
+            "classes": [],
+            "functions": [
+                {
+                    "name": "load_and_split_document",
+                    "start_line": 14,
+                    "end_line": 25,
+                    "calls": [
+                        "file_path.endswith",
+                        "PyPDFLoader",
+                        "file_path.endswith",
+                        "Docx2txtLoader",
+                        "file_path.endswith",
+                        "UnstructuredHTMLLoader",
+                        "ValueError",
+                        "loader.load",
+                        "text_splitter.split_documents"
+                    ]
+                },
+                {
+                    "name": "index_document_to_chroma",
+                    "start_line": 27,
+                    "end_line": 40,
+                    "calls": [
+                        "load_and_split_document",
+                        "vectorstore.add_documents",
+                        "print"
+                    ]
+                },
+                {
+                    "name": "delete_doc_from_chroma",
+                    "start_line": 42,
+                    "end_line": 53,
+                    "calls": [
+                        "vectorstore.get",
+                        "print",
+                        "len",
+                        "vectorstore._collection.delete",
+                        "print",
+                        "print",
+                        "str"
+                    ]
+                }
+            ]
+        },
+        {
+            "file": "C:\\projects\\Ask-docs\\api\\db_utils.py",
+            "imports": [
+                "import sqlite3",
+                "from datetime import datetime"
+            ],
+            "classes": [],
+            "functions": [
+                {
+                    "name": "get_db_connection",
+                    "start_line": 6,
+                    "end_line": 9,
+                    "calls": [
+                        "sqlite3.connect"
+                    ]
+                },
+                {
+                    "name": "create_application_logs",
+                    "start_line": 11,
+                    "end_line": 20,
+                    "calls": [
+                        "get_db_connection",
+                        "conn.execute",
+                        "conn.close"
+                    ]
+                },
+                {
+                    "name": "insert_application_logs",
+                    "start_line": 22,
+                    "end_line": 27,
+                    "calls": [
+                        "get_db_connection",
+                        "conn.execute",
+                        "conn.commit",
+                        "conn.close"
+                    ]
+                },
+                {
+                    "name": "get_chat_history",
+                    "start_line": 29,
+                    "end_line": 40,
+                    "calls": [
+                        "get_db_connection",
+                        "conn.cursor",
+                        "cursor.execute",
+                        "cursor.fetchall",
+                        "messages.extend",
+                        "conn.close"
+                    ]
+                },
+                {
+                    "name": "create_document_store",
+                    "start_line": 42,
+                    "end_line": 48,
+                    "calls": [
+                        "get_db_connection",
+                        "conn.execute",
+                        "conn.close"
+                    ]
+                },
+                {
+                    "name": "insert_document_record",
+                    "start_line": 50,
+                    "end_line": 57,
+                    "calls": [
+                        "get_db_connection",
+                        "conn.cursor",
+                        "cursor.execute",
+                        "conn.commit",
+                        "conn.close"
+                    ]
+                },
+                {
+                    "name": "delete_document_record",
+                    "start_line": 59,
+                    "end_line": 64,
+                    "calls": [
+                        "get_db_connection",
+                        "conn.execute",
+                        "conn.commit",
+                        "conn.close"
+                    ]
+                },
+                {
+                    "name": "get_all_documents",
+                    "start_line": 66,
+                    "end_line": 72,
+                    "calls": [
+                        "get_db_connection",
+                        "conn.cursor",
+                        "cursor.execute",
+                        "cursor.fetchall",
+                        "conn.close",
+                        "dict"
+                    ]
+                }
+            ]
+        },
+        {
+            "file": "C:\\projects\\Ask-docs\\api\\langchain_utils.py",
+            "imports": [
+                "from langchain_openai import ChatOpenAI",
+                "from langchain_core.output_parsers import StrOutputParser",
+                "from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder",
+                "from langchain.chains import create_history_aware_retriever, create_retrieval_chain",
+                "from langchain.chains.combine_documents import create_stuff_documents_chain",
+                "from typing import List",
+                "from langchain_core.documents import Document",
+                "import os",
+                "from dotenv import load_dotenv",
+                "from chroma_utils import vectorstore"
+            ],
+            "classes": [],
+            "functions": [
+                {
+                    "name": "get_rag_chain",
+                    "start_line": 46,
+                    "end_line": 51,
+                    "calls": [
+                        "ChatOpenAI",
+                        "create_history_aware_retriever",
+                        "create_stuff_documents_chain",
+                        "create_retrieval_chain"
+                    ]
+                }
+            ]
+        },
+        {
+            "file": "C:\\projects\\Ask-docs\\api\\main.py",
+            "imports": [
+                "from fastapi import FastAPI, File, UploadFile, HTTPException, WebSocket",
+                "from fastapi.websockets import WebSocketDisconnect",
+                "from pydantic_models import QueryInput, QueryResponse, DocumentInfo, DeleteFileRequest",
+                "from langchain_utils import get_rag_chain",
+                "from db_utils import insert_application_logs, get_chat_history, get_all_documents, insert_document_record, delete_document_record",
+                "from chroma_utils import index_document_to_chroma, delete_doc_from_chroma",
+                "import os",
+                "import uuid",
+                "import logging",
+                "from dotenv import load_dotenv",
+                "from fastapi import UploadFile, File, HTTPException",
+                "import shutil"
+            ],
+            "classes": [
+                {
+                    "name": "ConnectionManager",
+                    "start_line": 19,
+                    "end_line": 32,
+                    "methods": [
+                        {
+                            "name": "__init__",
+                            "start_line": 20,
+                            "end_line": 21,
+                            "calls": []
+                        },
+                        {
+                            "name": "connect",
+                            "start_line": 23,
+                            "end_line": 25,
+                            "calls": [
+                                "websocket.accept",
+                                "self.active_connections.append"
+                            ]
+                        },
+                        {
+                            "name": "disconnect",
+                            "start_line": 27,
+                            "end_line": 28,
+                            "calls": [
+                                "self.active_connections.remove"
+                            ]
+                        },
+                        {
+                            "name": "broadcast",
+                            "start_line": 30,
+                            "end_line": 32,
+                            "calls": [
+                                "connection.send_text"
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "functions": []
+        },
+        {
+            "file": "C:\\projects\\Ask-docs\\api\\pydantic_models.py",
+            "imports": [
+                "from pydantic import BaseModel, Field",
+                "from enum import Enum",
+                "from datetime import datetime"
+            ],
+            "classes": [
+                {
+                    "name": "ModelName",
+                    "start_line": 5,
+                    "end_line": 7,
+                    "methods": []
+                },
+                {
+                    "name": "QueryInput",
+                    "start_line": 9,
+                    "end_line": 12,
+                    "methods": []
+                },
+                {
+                    "name": "QueryResponse",
+                    "start_line": 14,
+                    "end_line": 17,
+                    "methods": []
+                },
+                {
+                    "name": "DocumentInfo",
+                    "start_line": 19,
+                    "end_line": 22,
+                    "methods": []
+                },
+                {
+                    "name": "DeleteFileRequest",
+                    "start_line": 24,
+                    "end_line": 25,
+                    "methods": []
+                }
+            ],
+            "functions": []
+        },
+        {
+            "file": "C:\\projects\\Ask-docs\\api\\test.py",
+            "imports": [
+                "import asyncio",
+                "import websockets"
+            ],
+            "classes": [],
+            "functions": [
+                {
+                    "name": "connect_websocket",
+                    "start_line": 13,
+                    "end_line": 23,
+                    "calls": [
+                        "websockets.connect",
+                        "websocket.send",
+                        "websocket.recv",
+                        "print",
+                        "print",
+                        "websocket.close"
+                    ]
+                }
+            ]
+        },
+        {
+            "file": "C:\\projects\\Ask-docs\\app\\api_utils.py",
+            "imports": [
+                "import requests",
+                "import streamlit as st",
+                "import asyncio",
+                "import websockets"
+            ],
+            "classes": [],
+            "functions": [
+                {
+                    "name": "websocket_communicate",
+                    "start_line": 5,
+                    "end_line": 20,
+                    "calls": [
+                        "websockets.connect",
+                        "websocket.send",
+                        "websocket.recv",
+                        "st.session_state.messages.append",
+                        "st.chat_message",
+                        "st.markdown",
+                        "st.error",
+                        "st.error",
+                        "str"
+                    ]
+                },
+                {
+                    "name": "get_api_response",
+                    "start_line": 22,
+                    "end_line": 43,
+                    "calls": [
+                        "requests.post",
+                        "response.json",
+                        "st.error",
+                        "st.error",
+                        "str"
+                    ]
+                },
+                {
+                    "name": "upload_document",
+                    "start_line": 45,
+                    "end_line": 57,
+                    "calls": [
+                        "print",
+                        "requests.post",
+                        "response.json",
+                        "st.error",
+                        "st.error",
+                        "str"
+                    ]
+                },
+                {
+                    "name": "list_documents",
+                    "start_line": 59,
+                    "end_line": 69,
+                    "calls": [
+                        "requests.get",
+                        "response.json",
+                        "st.error",
+                        "st.error",
+                        "str"
+                    ]
+                },
+                {
+                    "name": "delete_document",
+                    "start_line": 71,
+                    "end_line": 87,
+                    "calls": [
+                        "requests.post",
+                        "response.json",
+                        "st.error",
+                        "st.error",
+                        "str"
+                    ]
+                }
+            ]
+        },
+        {
+            "file": "C:\\projects\\Ask-docs\\app\\chat_interface.py",
+            "imports": [
+                "import streamlit as st",
+                "from api_utils import get_api_response",
+                "import streamlit as st",
+                "import asyncio",
+                "from api_utils import websocket_communicate"
+            ],
+            "classes": [],
+            "functions": [
+                {
+                    "name": "display_chat_interface",
+                    "start_line": 9,
+                    "end_line": 22,
+                    "calls": [
+                        "st.chat_message",
+                        "st.markdown",
+                        "st.chat_input",
+                        "st.session_state.messages.append",
+                        "st.chat_message",
+                        "st.markdown",
+                        "st.spinner",
+                        "asyncio.run",
+                        "websocket_communicate"
+                    ]
+                }
+            ]
+        },
+        {
+            "file": "C:\\projects\\Ask-docs\\app\\sidebar.py",
+            "imports": [
+                "import streamlit as st",
+                "from api_utils import upload_document, list_documents, delete_document"
+            ],
+            "classes": [],
+            "functions": [
+                {
+                    "name": "display_sidebar",
+                    "start_line": 4,
+                    "end_line": 44,
+                    "calls": [
+                        "st.sidebar.selectbox",
+                        "st.sidebar.header",
+                        "st.sidebar.file_uploader",
+                        "st.sidebar.button",
+                        "st.spinner",
+                        "upload_document",
+                        "st.sidebar.success",
+                        "list_documents",
+                        "st.sidebar.header",
+                        "st.sidebar.button",
+                        "st.spinner",
+                        "list_documents",
+                        "list_documents",
+                        "st.sidebar.text",
+                        "st.sidebar.selectbox",
+                        "next",
+                        "st.sidebar.button",
+                        "st.spinner",
+                        "delete_document",
+                        "st.sidebar.success",
+                        "list_documents",
+                        "st.sidebar.error"
+                    ]
+                }
+            ]
+        },
+        {
+            "file": "C:\\projects\\Ask-docs\\app\\streamlit_app.py",
+            "imports": [
+                "import streamlit as st",
+                "from sidebar import display_sidebar",
+                "from chat_interface import display_chat_interface"
+            ],
+            "classes": [],
+            "functions": []
+        }
+    ]
+}
